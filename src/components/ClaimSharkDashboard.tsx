@@ -1,21 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { AlertTriangle, BarChart, Bell, Camera, ChevronDown, FileText, Home, MessageSquare, PieChart, Settings, Shield, Sliders, Users } from "lucide-react"
+import { AlertTriangle, BarChart, Bell, Camera, ChevronDown, FileText, Home, MessageSquare, Menu, PieChart, Settings, Shield, Sliders, Users, X } from "lucide-react"
 
 export default function ClaimSharkDashboard() {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
+
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
-      <header className="flex items-center justify-between px-6 py-4 bg-white shadow-sm">
-        <div className="flex items-center space-x-4">
-          <PieChart className="w-8 h-8 text-blue-600" />
-          <h1 className="text-2xl font-bold text-gray-800">ClaimShark</h1>
+      <header className="flex items-center justify-between px-4 py-4 bg-white shadow-sm md:px-6">
+        <div className="flex items-center space-x-2 md:space-x-4">
+          <Button variant="ghost" size="icon" onClick={toggleSidebar} className="md:hidden">
+            <Menu className="h-6 w-6" />
+          </Button>
+          <PieChart className="w-6 h-6 text-blue-600 md:w-8 md:h-8" />
+          <h1 className="text-lg font-bold text-gray-800 md:text-2xl">ClaimShark</h1>
         </div>
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-2 md:space-x-4">
           <Button variant="outline" size="icon" className="text-gray-600 hover:text-blue-600">
             <Camera className="w-5 h-5" />
           </Button>
@@ -46,8 +53,14 @@ export default function ClaimSharkDashboard() {
           </DropdownMenu>
         </div>
       </header>
-      <div className="flex-1 flex">
-        <aside className="w-64 bg-white border-r border-gray-200">
+      <div className="flex-1 flex flex-col md:flex-row">
+        <aside className={`${sidebarOpen ? 'block' : 'hidden'} md:block fixed md:relative z-10 w-64 h-full bg-white border-r border-gray-200 transition-all duration-300 ease-in-out ${sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}>
+          <div className="flex justify-between items-center p-4 md:hidden">
+            <h2 className="text-lg font-semibold">Menu</h2>
+            <Button variant="ghost" size="icon" onClick={toggleSidebar}>
+              <X className="h-6 w-6" />
+            </Button>
+          </div>
           <nav className="flex flex-col p-4 space-y-2">
             {[
               { icon: Home, label: "Tableau de bord" },
@@ -67,15 +80,15 @@ export default function ClaimSharkDashboard() {
             ))}
           </nav>
         </aside>
-        <main className="flex-1 p-6 overflow-auto">
+        <main className={`flex-1 p-4 md:p-6 overflow-auto transition-all duration-300 ease-in-out ${sidebarOpen ? 'md:ml-64' : ''}`}>
           <Tabs defaultValue="apercu" className="space-y-4">
-            <TabsList className="bg-white p-1 rounded-lg shadow-sm">
+            <TabsList className="bg-white p-1 rounded-lg shadow-sm overflow-x-auto">
               <TabsTrigger value="apercu" className="data-[state=active]:bg-blue-100 data-[state=active]:text-blue-700">Aperçu</TabsTrigger>
               <TabsTrigger value="analyses" className="data-[state=active]:bg-blue-100 data-[state=active]:text-blue-700">Analyses</TabsTrigger>
               <TabsTrigger value="risques" className="data-[state=active]:bg-blue-100 data-[state=active]:text-blue-700">Gestion des risques</TabsTrigger>
             </TabsList>
             <TabsContent value="apercu" className="space-y-4">
-              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 {[
                   { title: "Total des réclamations", value: "1 284", change: "+20,1%", icon: BarChart },
                   { title: "Temps de traitement moyen", value: "3,2 jours", change: "-14%", icon: Users },
@@ -98,7 +111,7 @@ export default function ClaimSharkDashboard() {
                   </Card>
                 ))}
               </div>
-              <div className="grid gap-6 md:grid-cols-2">
+              <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2">
                 <Card className="col-span-1">
                   <CardHeader>
                     <CardTitle className="text-lg font-semibold text-gray-800">Classification des réclamations</CardTitle>
@@ -186,7 +199,7 @@ export default function ClaimSharkDashboard() {
                     alt="Graphique d'évaluation des risques"
                     className="rounded-md object-cover mb-4 w-full"
                   />
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <h4 className="text-sm font-medium text-gray-800 mb-2">Zones à haut risque</h4>
                       <ul className="space-y-1 text-sm text-gray-600">
@@ -210,10 +223,10 @@ export default function ClaimSharkDashboard() {
           </Tabs>
         </main>
       </div>
-      <footer className="bg-white border-t border-gray-200 py-4 px-6">
-        <div className="flex justify-between items-center">
+      <footer className="bg-white border-t border-gray-200 py-4 px-4 md:px-6">
+        <div className="flex flex-col items-center space-y-2 md:space-y-0 md:flex-row md:justify-between">
           <p className="text-sm text-gray-600">
-            © 2023 ClaimShark. All rights reserved.
+            © 2024 ClaimShark. All rights reserved.
           </p>
           <Button variant="outline" size="sm" className="text-blue-600 hover:bg-blue-50">
             <MessageSquare className="w-4 h-4 mr-2" />
