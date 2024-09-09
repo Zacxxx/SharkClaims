@@ -7,14 +7,27 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { AlertTriangle, BarChart, Shield } from "lucide-react"
 
-const properties = [
+interface Property {
+  id: number;
+  name: string;
+  status: 'green' | 'yellow' | 'orange' | 'red';
+  lat: number;
+  lng: number;
+}
+
+interface Park {
+  id: string;
+  name: string;
+}
+
+const properties: Property[] = [
   { id: 1, name: "Propriété 1", status: "green", lat: 48.8566, lng: 2.3522 },
   { id: 2, name: "Propriété 2", status: "red", lat: 48.8584, lng: 2.2945 },
   { id: 3, name: "Propriété 3", status: "orange", lat: 48.8738, lng: 2.2950 },
   { id: 4, name: "Propriété 4", status: "yellow", lat: 48.8619, lng: 2.3324 },
 ]
 
-const parks = [
+const parks: Park[] = [
   { id: "all", name: "Tous les parcs" },
   { id: "park1", name: "Parc A" },
   { id: "park2", name: "Parc B" },
@@ -22,11 +35,11 @@ const parks = [
 ]
 
 export function ParcInterface() {
-  const [selectedPark, setSelectedPark] = useState("all")
-  const [selectedProperty, setSelectedProperty] = useState(null)
-  const [activeTab, setActiveTab] = useState("carte")
+  const [selectedPark, setSelectedPark] = useState<string>("all")
+  const [selectedProperty, setSelectedProperty] = useState<Property | null>(null)
+  const [activeTab, setActiveTab] = useState<string>("carte")
 
-  const handlePropertyClick = (property) => {
+  const handlePropertyClick = (property: Property) => {
     setSelectedProperty(property)
     setActiveTab("propriete")
   }
