@@ -6,7 +6,11 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Camera, X, RotateCcw, Upload, Search, Trash2 } from "lucide-react"
 import { Checkbox } from "@/components/ui/checkbox"
 
-export function CameraInterface({ onClose }) {
+interface CameraInterfaceProps {
+  onClose: () => void;
+}
+
+export function CameraInterface({ onClose }: CameraInterfaceProps) {
   const [capturedImages, setCapturedImages] = useState<Array<{ src: string; selected: boolean }>>([
     { src: "/placeholder.svg?height=100&width=100", selected: false },
     { src: "/placeholder.svg?height=100&width=100", selected: false },
