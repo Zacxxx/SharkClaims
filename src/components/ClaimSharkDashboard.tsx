@@ -10,6 +10,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { AlertTriangle, BarChart, Bell, Camera, FileText, Home, MessageSquare, Menu, PieChart, Settings, Shield, Sliders, Users, X, MapPin } from "lucide-react"
 import { CameraInterface } from './camera-interface'
 import { ParcInterface } from './parc-interface'
+import { ClientsInterface } from './clients-interface'
+import IoTAlertMonitoring from './iot-interface' // Mise à jour de l'importation
 
 export default function ClaimSharkDashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -95,7 +97,11 @@ export default function ClaimSharkDashboard() {
         </aside>
         <main className={`flex-1 p-4 md:p-6 overflow-auto transition-all duration-300 ease-in-out ${sidebarOpen ? 'md:ml-64' : ''}`}>
           {selectedTab === "parc" ? (
-            <ParcInterface />
+        <ParcInterface />
+      ) : selectedTab === "clients" ? (
+        <ClientsInterface />
+      ) : selectedTab === "alertes" ? (
+        <IoTAlertMonitoring />
           ) : (
             <Tabs value={selectedTab} onValueChange={setSelectedTab} className="space-y-4">
               <TabsList className="bg-white p-1 rounded-lg shadow-sm overflow-x-auto">
